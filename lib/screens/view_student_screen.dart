@@ -74,13 +74,15 @@ class ViewStudentScreen extends StatelessWidget {
                       onPressed: () => openEditScreen(context),
                       icon: const Icon(Icons.edit),
                       label: const Text("Edit"),
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo,foregroundColor: Colors.white,
+                      ),
                     ),
                     ElevatedButton.icon(
                       onPressed: () => confirmDelete(context),
                       icon: const Icon(Icons.delete),
                       label: const Text("Delete"),
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.red,foregroundColor: Colors.white,
+                      ),
                     ),
                   ],
                 )

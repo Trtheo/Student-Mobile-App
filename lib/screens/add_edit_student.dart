@@ -111,6 +111,7 @@ class _AddEditStudentScreenState extends State<AddEditStudentScreen> {
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(45),
                     backgroundColor: Colors.indigo,
+                    foregroundColor: Colors.white,
                   ),
                 )
               ],
