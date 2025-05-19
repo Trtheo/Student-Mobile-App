@@ -15,17 +15,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  bool isLoading = false;
+  bool obscurePassword = true;
   String error = '';
 
   void handleRegister() async {
-    final res = await AuthAPI.register(
-      nameController.text.trim(),
-      emailController.text.trim(),
-      passwordController.text.trim(),
-    );
+    final name = nameController.text.trim();
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    if (name.isEmpty || email.isEmpty || password.isEmpty) {
+      setState(() => error = "All fields are required");
+      return;
+    }
+
+    // Validate email format
+    if (!RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+      setState(() => error = "Enter a valid email address");
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+      error = '';
+    });
+
+    final res = await AuthAPI.register(name, email, password);
+    setState(() => isLoading = false);
 
     if (res.containsKey('token')) {
-      await SessionManager.saveSession(res['token'], emailController.text.trim());
+      await SessionManager.saveSession(res['token'], email);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const MainScreen()),
@@ -46,7 +66,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Card(
             elevation: 8,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(24),
               child: Column(
@@ -68,6 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 15),
                   TextField(
                     controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       labelText: "Email",
                       prefixIcon: Icon(Icons.email),
@@ -76,27 +99,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 15),
                   TextField(
                     controller: passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
+                    obscureText: obscurePassword,
+                    decoration: InputDecoration(
                       labelText: "Password",
-                      prefixIcon: Icon(Icons.lock),
+                      prefixIcon: const Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          obscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            obscurePassword = !obscurePassword;
+                          });
+                        },
+                      ),
                     ),
                   ),
                   const SizedBox(height: 25),
-                  ElevatedButton.icon(
-                    onPressed: handleRegister,
-                    icon: const Icon(Icons.app_registration),
-                    label: const Text("Register"),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(45),
-                      backgroundColor: Colors.indigo,
-                    ),
-                  ),
+                  isLoading
+                      ? const CircularProgressIndicator()
+                      : ElevatedButton.icon(
+                        onPressed: handleRegister,
+                        icon: const Icon(Icons.app_registration),
+                        label: const Text("Register"),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(45),
+                          backgroundColor: Colors.indigo,
+                          foregroundColor: Colors.white,
+                        ),
+                      ),
                   const SizedBox(height: 15),
                   TextButton(
                     onPressed: () => Navigator.pop(context),
                     child: const Text("Already have an account? Login"),
-                  )
+                  ),
                 ],
               ),
             ),

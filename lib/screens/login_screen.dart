@@ -3,6 +3,7 @@ import '../services/auth_api.dart';
 import '../utils/session_manager.dart';
 import 'register_screen.dart';
 import 'main_screen.dart';
+import 'forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,12 +15,31 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  bool isLoading = false;
+  bool obscurePassword = true;
   String error = '';
 
   void handleLogin() async {
-    final res = await AuthAPI.login(emailController.text, passwordController.text);
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    // Basic email validation
+    if (!RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+      setState(() => error = "Enter a valid email address");
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+      error = '';
+    });
+
+    final res = await AuthAPI.login(email, password);
+    setState(() => isLoading = false);
+
     if (res.containsKey('token')) {
-      await SessionManager.saveSession(res['token'], emailController.text);
+      await SessionManager.saveSession(res['token'], email);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const MainScreen()),
@@ -58,26 +78,40 @@ class _LoginScreenState extends State<LoginScreen> {
                       labelText: "Email",
                       prefixIcon: Icon(Icons.email),
                     ),
+                    keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 15),
                   TextField(
                     controller: passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
+                    obscureText: obscurePassword,
+                    decoration: InputDecoration(
                       labelText: "Password",
-                      prefixIcon: Icon(Icons.lock),
+                      prefixIcon: const Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          obscurePassword ? Icons.visibility_off : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            obscurePassword = !obscurePassword;
+                          });
+                        },
+                      ),
                     ),
                   ),
                   const SizedBox(height: 25),
-                  ElevatedButton.icon(
-                    onPressed: handleLogin,
-                    icon: const Icon(Icons.login),
-                    label: const Text("Login"),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(45),
-                      backgroundColor: Colors.indigo,
-                    ),
-                  ),
+                  isLoading
+                      ? const CircularProgressIndicator()
+                      : ElevatedButton.icon(
+                          onPressed: handleLogin,
+                          icon: const Icon(Icons.login),
+                          label: const Text("Login"),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size.fromHeight(45),
+                            backgroundColor: Colors.indigo,
+                            foregroundColor: Colors.white,
+                          ),
+                        ),
                   const SizedBox(height: 15),
                   TextButton(
                     onPressed: () => Navigator.push(
@@ -85,7 +119,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialPageRoute(builder: (_) => const RegisterScreen()),
                     ),
                     child: const Text("Don't have an account? Register"),
-                  )
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const ForgotPasswordScreen()),
+                    ),
+                    child: const Text("Forgot Password?"),
+                  ),
                 ],
               ),
             ),
