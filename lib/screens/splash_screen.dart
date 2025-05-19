@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/session_manager.dart';
 import 'login_screen.dart';
-import 'main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,32 +9,70 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool showSkip = true;
+
   @override
   void initState() {
     super.initState();
-    checkLoginStatus();
+
+    // Auto navigate after 5 seconds
+    Future.delayed(const Duration(seconds: 5), () {
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const LoginScreen()),
+        );
+      }
+    });
   }
 
-  void checkLoginStatus() async {
-    final token = await SessionManager.getToken();
-    await Future.delayed(const Duration(seconds: 2)); // optional splash delay
-    if (token != null && token.isNotEmpty) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const MainScreen()),
-      );
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
-      );
-    }
+  void skip() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: CircularProgressIndicator()),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Stack(
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/logo.png', //  Make sure this path matches your image
+                  width: 180,
+                  height: 180,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Welcome to Student App",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 40,
+            right: 24,
+            child: ElevatedButton(
+              onPressed: skip,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.indigo,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              child: const Text("Skip"),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,30 +1,31 @@
-# 📘 Student Record Management App (Flutter with Dart) programming language
+# 📘 Student Record Management App with REST APIs (Flutter with Dart) programming language
 
 A modern Flutter mobile application to manage student records with:
 
-- 🔐 Login/Register using a Node.js backend API
-- 💾 Local student data stored via SQLite
-- 🌙 Dark mode toggle
-- 👥 Multi-user support (records are tied to login email)
-- ✨ Beautiful UI with bottom navigation and clean design
+-  Login/Register/Forgot Password using a Node.js & Express backend API
+-  Local student data stored via SQLite
+-  Dark mode toggle
+-  Multi-user support (records are tied to login email)
+-  Beautiful UI with bottom navigation and clean design
 
 ---
 
-## 📱 Features
+##  Features
 
-- ✅ User registration and login (via REST API)
-- ✅ Secure session management with `SharedPreferences`
-- ✅ SQLite CRUD (Create, Read, Update, Delete) for student records
-- ✅ Scoped records per user (multi-profile)
-- ✅ Dark mode support (persisted)
-- ✅ Bottom navigation bar: Home, Student CRUD, Settings
-- ✅ Search student by name
-- ✅ View, edit, and delete student details with confirmation
-- ✅ Responsive and adaptive UI design
+-  User registration , login and reset password (via REST API)
+-  Secure session management with `SharedPreferences`
+-  SQLite CRUD (Create, Read, Update, Delete) for student records
+-  Scoped records per user (multi-profile)
+-  Dark mode support (persisted)
+-  Bottom navigation bar: Home, Student CRUD, Settings
+-  Search student by name
+-  View, edit, and delete student details with confirmation
+-  Responsive and adaptive UI design
+- Reset password when user forgot password and is already registered.
 
 ---
 
-## 🧱 Tech Stack
+##  Tech Stack
 
 | Layer       | Tech                                 |
 |-------------|--------------------------------------|
@@ -35,7 +36,7 @@ A modern Flutter mobile application to manage student records with:
 
 ---
 
-## 📦 Packages Used
+##  Packages Used
 
 ```yaml
 dependencies:
@@ -96,9 +97,31 @@ Server running on http://localhost:5000
 }
 ```
 
+#### Forgot Password API Example
 
+**POST    http://localhost:5000/api/reset-password**
+
+ ```bash
+  {
+  "email": "theophile@gmail.com",
+  "password": "Secure8543222!#@"
+}
+ ```
+**--------------------------------------------------------**
 ### 🙋‍♂️ Author
 - Theophile Niyigaba
 - Computer & Software Engineer
 📧 niyigabatheo10@gmail.com
 🌐 https://visittheo.vercel.app/
+
+
+## Here is the sample demo of this Mobile App.
+
+### A. Mobile Screens
+1. Splash Screen when app is open in 5 seconnd
+  
+  ![spalshscreen](assets\Screens\SplashScreen.png)
+
+
+
+

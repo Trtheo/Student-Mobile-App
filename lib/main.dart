@@ -30,7 +30,7 @@ class StudentApp extends StatelessWidget {
         primarySwatch: Colors.deepOrange,
         brightness: Brightness.dark,
       ),
-      home: const SplashScreen(), // ✅ Launch splash
+      home: const SplashScreen(), //  Launch splash
     );
   }
 }

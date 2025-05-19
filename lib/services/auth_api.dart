@@ -29,4 +29,19 @@ class AuthAPI {
       headers: {"Authorization": "Bearer $token"},
     );
   }
+
+  // ADD THIS METHOD FOR PASSWORD RESET
+  static Future<Map<String, dynamic>> resetPassword(String email, String newPassword) async {
+    try {
+      final response = await http.post(
+        Uri.parse("$baseUrl/reset-password"),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'newPassword': newPassword}),
+      );
+
+      return jsonDecode(response.body);
+    } catch (e) {
+      return {'success': false, 'message': 'Network error'};
+    }
+  }
 }
