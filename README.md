@@ -108,7 +108,7 @@ Server running on http://localhost:5000
 }
  ```
 **--------------------------------------------------------**
-### 🙋‍♂️ Author
+###  Author
 - Theophile Niyigaba
 - Computer & Software Engineer
 📧 niyigabatheo10@gmail.com
@@ -120,8 +120,47 @@ Server running on http://localhost:5000
 ### A. Mobile Screens
 1. Splash Screen when app is open in 5 seconnd
   
-  ![spalshscreen](assets\Screens\SplashScreen.png)
+  ![splash_screen](assets\Screens\SplashScreen.png)
 
+2. Register Screen
+  ![splash_screen](assets\Screens\RegisterScreen.png)
 
+3. Login Screen
+
+  ![splash_screen](assets\Screens\LoginScreen.png)
+
+4. CRUD (Add, Edit , View ) Screen
+
+  ![splash_screen](assets\Screens\AddDeleteEditScreen.png)
+
+5. List of Students Screen
+
+  ![splash_screen](assets\Screens\ListOfStudents.png)
+
+6. Profile Settings Screen
+ ![splash_screen](assets\Screens\ProfileSettingScreen.png)
+ 
+ 7. Reset Password Screen
+
+ ![splash_screen](assets\Screens\ResetPassScreen.png)
+ 
+
+## B. API Testing in Postman
+
+1. Register API
+
+![splash_screen](assets\API_Images\registerAPI.png)
+
+2. Login API
+
+![splash_screen](assets\API_Images\loginAPI.png)
+
+3. Get All users Registered API
+
+![splash_screen](assets\API_Images\getAllUsersAPI.png)
+ 
+4. Reset Password API
+
+![splash_screen](assets\API_Images\ResetPassAPI.png)
 
 
